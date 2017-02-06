@@ -13,10 +13,7 @@
 GPIO_InitTypeDef  GPIO_InitStructure;
 I2S_InitTypeDef I2S_InitStructure;
 
-#define SPI1_NSS GPIO_Pin_6
-#define SPI1_SCK GPIO_Pin_7
-#define SPI1_MOSI GPIO_Pin_8
-#define SPI1_MISO GPIO_Pin_9
+
 //#define I2S2_MCK GPIO_Pin_6
 //#define I2S2_SD GPIO_Pin_3
 //#define I2S2_WS GPIO_Pin_12
@@ -136,23 +133,8 @@ GPIO_SetBits(GPIO_POWER_CONTROL_5, POWER_CONTROL_5);
 void initDAC()
 {
 //Standalone Mode
-GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;  // направление - выход
-GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;  // Двухтактный выход
-GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;  // Без подтяжки
-GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;  // Скорость низкая
-
-GPIO_InitStructure.GPIO_Pin = SPI1_MISO;
-GPIO_Init(GPIO_SPI1_MISO, &GPIO_InitStructure);
-GPIO_ResetBits(GPIO_SPI1_MISO, SPI1_MISO);
-
-GPIO_InitStructure.GPIO_Pin = SPI1_SCK;
-GPIO_Init(GPIO_SPI1_SCK, &GPIO_InitStructure);
-GPIO_ResetBits(GPIO_SPI1_SCK, SPI1_SCK);
-
-GPIO_InitStructure.GPIO_Pin = SPI1_NSS;
-GPIO_Init(GPIO_SPI1_NSS, &GPIO_InitStructure);
-GPIO_ResetBits(GPIO_SPI1_NSS, SPI1_NSS);
-
+//SPI_prog_Reset();
+SPI_prog_Send_Data();
 
 //Reset DAC
 GPIO_InitStructure.GPIO_Pin = POWER_CONTROL_3;

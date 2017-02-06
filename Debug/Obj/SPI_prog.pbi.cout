@@ -1,4 +1,4 @@
-"C:\Users\Андрей\Google Диск\Имитатор\Прошивка\CMSIS\system_stm32f4xx.c"
+"C:\Users\Андрей\Google Диск\Имитатор\Прошивка\SPI_prog.c"
 -std=c99
 -ferror-limit=100
 -I
@@ -211,7 +211,7 @@ C:\Users\Андрей\Google Диск\Имитатор\Прошивка\CMSIS
 -D__HAS_LOCATED_WITH_INIT__=1
 -D__IAR_COMPILERBASE__=593160
 -D__DATE__="Feb  6 2017"
--D__TIME__="18:58:54"
+-D__TIME__="19:56:43"
 -D__STDC__=1
 -D__STDC_VERSION__=199901L
 -D__STDC_HOSTED__=1

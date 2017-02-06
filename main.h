@@ -37,6 +37,8 @@
 #include "stm32f4xx.h"
 
 
+   
+   
 #define GPIO_PIN9 GPIOD
 #define GPIO_PIN10 GPIOD
 #define GPIO_PIN11 GPIOD
@@ -66,6 +68,11 @@
 #define POWER_CONTROL_3 GPIO_Pin_5
 #define POWER_CONTROL_4 GPIO_Pin_4
 #define POWER_CONTROL_5 GPIO_Pin_5
+#define SPI1_NSS GPIO_Pin_6
+#define SPI1_SCK GPIO_Pin_7
+#define SPI1_MOSI GPIO_Pin_8
+#define SPI1_MISO GPIO_Pin_9
+   
 
 #ifdef __cplusplus
 }
