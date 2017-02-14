@@ -133,8 +133,8 @@ GPIO_SetBits(GPIO_POWER_CONTROL_5, POWER_CONTROL_5);
 void initDAC()
 {
 //Standalone Mode
-//SPI_prog_Reset();
-SPI_prog_Send_Data();
+SPI_prog_Reset();
+//SPI_prog_Send_Data();
 
 //Reset DAC
 GPIO_InitStructure.GPIO_Pin = POWER_CONTROL_3;
@@ -251,11 +251,11 @@ static void I2S_Config(void)
   /* Initialize  I2Sx and I2Sxext peripherals */
   SPI_I2S_DeInit(I2Sx);
   /* Configure the Audio Frequency, Standard and the data format */
-  I2S_InitStructure.I2S_AudioFreq = I2S_AudioFreq_8k;
+  I2S_InitStructure.I2S_AudioFreq = I2S_AudioFreq_48k;
   I2S_InitStructure.I2S_Standard = I2S_Standard_Phillips;
-  I2S_InitStructure.I2S_MCLKOutput = I2S_MCLKOutput_Disable;
+  I2S_InitStructure.I2S_MCLKOutput = I2S_MCLKOutput_Enable;
   I2S_InitStructure.I2S_CPOL = I2S_CPOL_Low;
-  I2S_InitStructure.I2S_DataFormat = I2S_DataFormat_16b;
+  I2S_InitStructure.I2S_DataFormat = I2S_DataFormat_32b;
   
   /* Master full Duplex configuration ----------------------------------------*/
   /* Clear the Rx Master Buffer */

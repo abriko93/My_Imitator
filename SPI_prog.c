@@ -1,7 +1,7 @@
 #include "main.h"
 
 const uint8_t num = 3;
-uint8_t key = 0, i = 0, j = 0;
+uint8_t key = 4, i = 0, j = 0, delay = 0;
 uint8_t bytes[] = {0xAA, 0xF0, 0xB2};
 
 extern void SPI_prog_Reset(void);
@@ -22,7 +22,7 @@ extern void SPI_prog_Send_Data(void)
   SPI_prog_GPIO_Configuration();
   GPIO_ResetBits(GPIO_SPI1_MISO, SPI1_MISO);
   GPIO_ResetBits(GPIO_SPI1_SCK, SPI1_SCK);
-  GPIO_ResetBits(GPIO_SPI1_NSS, SPI1_NSS);
+  GPIO_SetBits(GPIO_SPI1_NSS, SPI1_NSS);
   
   SPI_prog_TIM_Config();
 }
@@ -33,11 +33,18 @@ void SPI_prog_GPIO_Configuration(void)
   
   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOF, ENABLE);
   
-  GPIO_InitStructure.GPIO_Pin = SPI1_NSS | SPI1_SCK | SPI1_MISO;
+  GPIO_InitStructure.GPIO_Pin = SPI1_SCK | SPI1_MISO;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;
+  GPIO_Init(GPIOF, &GPIO_InitStructure);
+  
+  GPIO_InitStructure.GPIO_Pin = SPI1_NSS;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
   GPIO_Init(GPIOF, &GPIO_InitStructure);
   
   GPIO_InitStructure.GPIO_Pin = SPI1_MOSI;
@@ -108,8 +115,9 @@ void TIM4_IRQHandler()
         j = 0;
         i = 0;
         //GPIO_SPI1_NSS->ODR ^= SPI1_NSS;
-        key = 0;
         
+        key = 4;
+        GPIO_SetBits(GPIO_SPI1_NSS, SPI1_NSS);
         /*
         TIM_ITConfig(TIM4, TIM_IT_Update, DISABLE);
         TIM_Cmd(TIM4, DISABLE);
@@ -117,6 +125,18 @@ void TIM4_IRQHandler()
         */
       } 
     }
-    break;
+    case 4:
+      if (delay < 5)
+      {
+        
+        GPIO_ResetBits(GPIO_SPI1_NSS, SPI1_NSS);
+        delay++;
+      }
+      else
+      {
+        delay=0;
+        key=0;
+      }
+      break;
   }
 }
