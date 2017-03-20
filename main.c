@@ -8,6 +8,8 @@
 #include "stm32f4xx_spi.h"
 #include "stm32f4xx_tim.h"
 
+#include "DAC_AD1934.h"
+
 /*******************************************************************/
 // Объявляем переменные
 GPIO_InitTypeDef  GPIO_InitStructure;
@@ -63,6 +65,7 @@ I2S_InitTypeDef I2S_InitStructure;
 
 
 uint8_t state = 0x00;
+uint8_t res = 0x00;
 
 const uint16_t aTxMasterBuffer[] =
   {
@@ -129,22 +132,6 @@ GPIO_SetBits(GPIO_POWER_CONTROL_5, POWER_CONTROL_5);
 */
 }
 
-// Проверка ЦАП
-void initDAC()
-{
-//Standalone Mode
-SPI_prog_Reset();
-//SPI_prog_Send_Data();
-
-//Reset DAC
-GPIO_InitStructure.GPIO_Pin = POWER_CONTROL_3;
-GPIO_Init(GPIO_POWER_CONTROL_3, &GPIO_InitStructure);
-GPIO_ResetBits(GPIO_POWER_CONTROL_3, POWER_CONTROL_3);
-
-/* I2S configuration -------------------------------------------------------*/
-I2S_Config();
-}
-
 void initTIMER()
 {
   TIM_TimeBaseInitTypeDef timer;
@@ -179,26 +166,35 @@ int main()
     initDIOD();
     initPOWER();
     initTIMER();
-    initDAC();
+    
+    DAC_AD1934_POWER_CONF(ENABLE);
+    DAC_AD1934_SPI_STANDALONE();
+    //DAC_AD1934_SPI_SEND(0x06, 0x43);
+    //res = DAC_AD1934_SPI_READ(0x06);
+
         
     /* SysTick configuration ---------------------------------------------------*/
-    SysTickConfig();
+    //SysTickConfig();
 
 
 
 
     while(1)
     {    
+
       /* Master full Duplex Communication ----------------------------------------*/
       /* Communication Full Duplex Started */
+      /*
       ubBufferCounter = 0;
       while ((ubBufferCounter != TX_MASTER_BUFFERSIZE))
       {
+      */
         /* Data to transmitted through I2Sx SD pin */
-        while (SPI_I2S_GetFlagStatus(I2Sx, SPI_I2S_FLAG_TXE ) != SET);
+        /*while (SPI_I2S_GetFlagStatus(I2Sx, SPI_I2S_FLAG_TXE ) != SET);
         SPI_I2S_SendData(I2Sx, aTxMasterBuffer[ubBufferCounter]);
         ubBufferCounter++;
-      }			
+      }	
+      */
     } 
 }
 

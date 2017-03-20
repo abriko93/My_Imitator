@@ -322,7 +322,6 @@ typedef struct
 /** @defgroup SPI_I2S_Audio_Frequency 
   * @{
   */
-
 #define I2S_AudioFreq_192k               ((uint32_t)192000)
 #define I2S_AudioFreq_96k                ((uint32_t)96000)
 #define I2S_AudioFreq_48k                ((uint32_t)48000)

@@ -21,7 +21,7 @@ ActionState=1
 Enabled=0
 ShowSource=1
 [DebugChecksum]
-Checksum=1953181991
+Checksum=855602861
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -73,6 +73,10 @@ EventLSU=0
 EventSLEEP=0
 [JLinkDriver]
 CStepIntDis=_ 0
+[Disassemble mode]
+mode=0
+[Breakpoints2]
+Count=0
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -80,6 +84,11 @@ Category=_ 0
 [TermIOLog]
 LoggingEnabled=_ 0
 LogFile=_ ""
+[Aliases]
+A0=_ "C:\Users\Андрей\Desktop\My_STM32F4\STM32F4XX_LIB\stm32f4xx_rcc.c" ""
+A1=_ "C:\Users\Андрей\Desktop\My_STM32F4\main.c" ""
+Count=2
+SuppressDialog=0
 [CallStackLog]
 Enabled=0
 [DriverProfiling]
@@ -88,13 +97,3 @@ Mode=0
 Graph=0
 Symbiont=0
 Exclusions=
-[Disassemble mode]
-mode=0
-[Breakpoints2]
-Bp0=_ 1 "EMUL_CODE" "{$PROJ_DIR$\main.c}.182.5" 0 0 1 "" 0 "" 0
-Count=1
-[Aliases]
-A0=_ "C:\Users\Андрей\Desktop\My_STM32F4\STM32F4XX_LIB\stm32f4xx_rcc.c" ""
-A1=_ "C:\Users\Андрей\Desktop\My_STM32F4\main.c" ""
-Count=2
-SuppressDialog=0

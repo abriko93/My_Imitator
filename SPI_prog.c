@@ -1,8 +1,10 @@
-#include "main.h"
+#include "DAC_AD1934.h"
 
 const uint8_t num = 3;
-uint8_t key = 4, i = 0, j = 0, delay = 0;
-uint8_t bytes[] = {0xAA, 0xF0, 0xB2};
+uint8_t key = 4, i = 0, j = 0;
+uint32_t delay = 0;
+uint8_t bytes[] = {0x09, 0x06, 0xAA};
+uint8_t CIN_bytes[3];
 
 extern void SPI_prog_Reset(void);
 extern void SPI_prog_Send_Byte(uint8_t *Buf);
@@ -45,13 +47,13 @@ void SPI_prog_GPIO_Configuration(void)
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-  GPIO_Init(GPIOF, &GPIO_InitStructure);
+  GPIO_Init(GPIO_SPI1_NSS, &GPIO_InitStructure);
   
   GPIO_InitStructure.GPIO_Pin = SPI1_MOSI;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;
-  GPIO_Init(GPIOF, &GPIO_InitStructure);
+  GPIO_Init(GPIO_SPI1_MISO, &GPIO_InitStructure);
 }
 
 void SPI_prog_TIM_Config(void)
@@ -78,7 +80,6 @@ void TIM4_IRQHandler()
   switch (key)
   {
   case 0:
-    key++;
     if(((bytes[j]<<i)&0x80) == 0x80)
     {
       GPIO_SetBits(GPIO_SPI1_MISO, SPI1_MISO);
@@ -87,13 +88,15 @@ void TIM4_IRQHandler()
     {
       GPIO_ResetBits(GPIO_SPI1_MISO, SPI1_MISO);
     }
-    i++;
+    key++;
     break;
   case 1:
     GPIO_SetBits(GPIO_SPI1_SCK, SPI1_SCK);
     key++;
     break;
   case 2:
+    CIN_bytes[j] = CIN_bytes[j] | ((GPIO_ReadInputDataBit(GPIO_SPI1_MOSI, SPI1_MOSI)) << (7-i));
+    i++;
     key++;
     break;
   case 3:
@@ -118,6 +121,15 @@ void TIM4_IRQHandler()
         
         key = 4;
         GPIO_SetBits(GPIO_SPI1_NSS, SPI1_NSS);
+        
+      delay=0;
+      if (delay < 5000000)
+      {
+        delay++;
+      }
+      delay=0;
+        
+        
         /*
         TIM_ITConfig(TIM4, TIM_IT_Update, DISABLE);
         TIM_Cmd(TIM4, DISABLE);
@@ -128,12 +140,15 @@ void TIM4_IRQHandler()
     case 4:
       if (delay < 5)
       {
-        
         GPIO_ResetBits(GPIO_SPI1_NSS, SPI1_NSS);
         delay++;
       }
       else
       {
+        CIN_bytes[0]=0x00;
+        CIN_bytes[1]=0x00;
+        CIN_bytes[2]=0x00;
+        
         delay=0;
         key=0;
       }
